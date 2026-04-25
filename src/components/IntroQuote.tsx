@@ -7,10 +7,10 @@ export default function IntroQuote() {
         alignItems: "center",
         justifyContent: "center",
         padding: "4rem 2rem 6rem",
-        background: "var(--sequence-bg)",
+        background: "transparent",
         textAlign: "center",
         position: "relative",
-        zIndex: 2
+        zIndex: 10
       }}
     >
       <div style={{ maxWidth: "34rem" }}>

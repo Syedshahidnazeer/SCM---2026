@@ -1095,11 +1095,16 @@ img {
   }
 
   .hero__image {
-    display: none !important;
+    position: relative;
+    height: 45svh;
+    width: 100%;
+    margin-top: 2rem;
+    object-position: center bottom;
   }
 
   .scrolly {
     height: 380vh;
+    margin-top: -30svh;
   }
 
   .scrolly__sticky::after {
