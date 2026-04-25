@@ -59,9 +59,13 @@ export function useImageSequence(totalFrames: number, priorityIndex = 0) {
     isMountedRef.current = true;
 
     const loadCriticalFrames = async () => {
+      const isMobile =
+        window.matchMedia("(max-width: 768px)").matches ||
+        window.matchMedia("(pointer: coarse)").matches;
+
       const criticalFrames = uniqueFrames(
         [
-          ...Array.from({ length: Math.min(24, totalFrames) }, (_, index) => index),
+          ...Array.from({ length: isMobile ? 8 : Math.min(24, totalFrames) }, (_, index) => index),
           59,
           119,
           179,
@@ -74,21 +78,24 @@ export function useImageSequence(totalFrames: number, priorityIndex = 0) {
 
       idleHandles.push(
         scheduleIdle(() => {
-          for (let index = 24; index < totalFrames; index += 4) {
+          const step = isMobile ? 8 : 4;
+          for (let index = 24; index < totalFrames; index += step) {
             void requestFrame(index);
           }
         })
       );
 
-      idleHandles.push(
-        scheduleIdle(() => {
-          for (let index = 24; index < totalFrames; index += 1) {
-            if (index % 4 !== 0) {
-              void requestFrame(index);
+      if (!isMobile) {
+        idleHandles.push(
+          scheduleIdle(() => {
+            for (let index = 24; index < totalFrames; index += 1) {
+              if (index % 4 !== 0) {
+                void requestFrame(index);
+              }
             }
-          }
-        })
-      );
+          })
+        );
+      }
     };
 
     void loadCriticalFrames();
@@ -103,8 +110,13 @@ export function useImageSequence(totalFrames: number, priorityIndex = 0) {
   }, [requestFrame, totalFrames]);
 
   useEffect(() => {
+    const isMobile =
+      typeof window !== "undefined" &&
+      (window.matchMedia("(max-width: 768px)").matches || window.matchMedia("(pointer: coarse)").matches);
+    const length = isMobile ? 7 : 19;
+
     const priorityWindow = uniqueFrames(
-      Array.from({ length: 19 }, (_, index) => {
+      Array.from({ length }, (_, index) => {
         const radius = Math.ceil(index / 2);
         const direction = index % 2 === 0 ? 1 : -1;
         return priorityIndex + radius * direction;
@@ -147,7 +159,13 @@ export function useImageSequence(totalFrames: number, priorityIndex = 0) {
 
   const preloadAround = useCallback(
     (targetIndex: number, radius = 8) => {
-      for (let offset = -radius; offset <= radius; offset += 1) {
+      const isMobile =
+        typeof window !== "undefined" &&
+        (window.matchMedia("(max-width: 768px)").matches || window.matchMedia("(pointer: coarse)").matches);
+      
+      const effectiveRadius = isMobile ? Math.min(radius, 3) : radius;
+
+      for (let offset = -effectiveRadius; offset <= effectiveRadius; offset += 1) {
         void requestFrame(targetIndex + offset);
       }
     },

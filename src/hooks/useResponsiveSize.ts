@@ -22,10 +22,25 @@ export function useResponsiveSize<T extends HTMLElement>(ref: RefObject<T>) {
 
     const update = () => {
       const rect = element.getBoundingClientRect();
-      setSize({
-        width: Math.max(1, Math.round(rect.width)),
-        height: Math.max(1, Math.round(rect.height)),
-        dpr: Math.min(window.devicePixelRatio || 1, 2)
+      const isMobile =
+        window.matchMedia("(max-width: 768px)").matches ||
+        window.matchMedia("(pointer: coarse)").matches;
+      const maxDpr = isMobile ? 1.25 : 2;
+
+      setSize((prev) => {
+        const newWidth = Math.max(1, Math.round(rect.width));
+        const newHeight = Math.max(1, Math.round(rect.height));
+        
+        // Prevent aggressive canvas resizing on mobile when the address bar hides/shows
+        if (isMobile && prev.width === newWidth && Math.abs(prev.height - newHeight) < 120 && prev.height !== 0) {
+          return prev;
+        }
+
+        return {
+          width: newWidth,
+          height: newHeight,
+          dpr: Math.min(window.devicePixelRatio || 1, maxDpr)
+        };
       });
     };
 
