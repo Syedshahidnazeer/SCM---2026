@@ -3,7 +3,7 @@ export const FRAME_ASPECT_RATIO = 16 / 9;
 
 export function getFrameUrl(index: number) {
   const frame = String(index + 1).padStart(3, "0");
-  return `/resources/ezgif-frame-${frame}.jpg`;
+  return `/resources/ezgif-frame-${frame}.webp`;
 }
 
 function waitForImageLoad(img: HTMLImageElement) {

@@ -948,7 +948,6 @@ img {
 }
 
 .bicycle-canvas {
-  background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.85) 45%, #000000 70%), var(--sequence-bg);
   height: 100svh;
   min-height: 100svh;
   width: 100vw;
@@ -1104,7 +1103,6 @@ img {
 
   .scrolly {
     height: 380vh;
-    margin-top: -30svh;
   }
 
   .scrolly__sticky::after {
@@ -1112,9 +1110,8 @@ img {
   }
 
   .bicycle-canvas {
-    background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.92) 55%, #000000 80%), var(--sequence-bg);
-    height: 100vh;
-    min-height: 100vh;
+    height: min(66vh, calc(100vh - 8.5rem), 620px);
+    min-height: 280px;
     width: 100vw;
   }
 
