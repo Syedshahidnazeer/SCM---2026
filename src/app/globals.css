@@ -1089,25 +1089,26 @@ img {
 @media (max-width: 680px) {
   .hero {
     align-items: flex-start;
-    min-height: 100svh;
-    padding-bottom: 5rem;
-    padding-top: 10svh;
+    min-height: auto;
+    padding-bottom: 3rem;
+    padding-top: 18svh;
   }
 
   .hero__image {
-    object-position: center bottom;
-    opacity: 0.68;
-    height: 65svh;
-    top: auto !important;
-    bottom: 0 !important;
+    display: none !important;
   }
 
   .scrolly {
-    height: 380vh; /* slightly taller to give more scrolling room on short mobile screens */
+    height: 380vh;
+  }
+
+  .scrolly__sticky::after {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.8), transparent 12%, transparent 88%, rgba(0, 0, 0, 0.8));
   }
 
   .bicycle-canvas {
-    height: 100vh; /* Fixes address bar jitter */
+    background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.92) 55%, #000000 80%), var(--sequence-bg);
+    height: 100vh;
     min-height: 100vh;
     width: 100vw;
   }
