@@ -1,10 +1,17 @@
 export const TOTAL_FRAMES = 240;
 export const FRAME_ASPECT_RATIO = 16 / 9;
-const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
+// Used by Next.js <Image> component, which automatically prepends the Next.js basePath
 export function getFrameUrl(index: number) {
   const frame = String(index + 1).padStart(3, "0");
-  return `${BASE_PATH}/resources/ezgif-frame-${frame}.jpg`;
+  return `/resources/ezgif-frame-${frame}.jpg`;
+}
+
+// Used by manual new Image() in the canvas. 
+// A relative path perfectly resolves against the trailing slash URL (e.g. /SCM---2026/)
+export function getCanvasFrameUrl(index: number) {
+  const frame = String(index + 1).padStart(3, "0");
+  return `resources/ezgif-frame-${frame}.jpg`;
 }
 
 function waitForImageLoad(img: HTMLImageElement) {
@@ -21,7 +28,7 @@ export async function loadFrame(index: number, retries = 2): Promise<CanvasImage
     try {
       const img = new Image();
       img.decoding = "async";
-      img.src = getFrameUrl(index);
+      img.src = getCanvasFrameUrl(index);
       await waitForImageLoad(img);
 
       if ("createImageBitmap" in window) {
